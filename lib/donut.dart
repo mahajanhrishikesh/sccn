@@ -46,9 +46,9 @@ class DonutAutoLabelChart extends StatelessWidget {
   /// Create one series with sample hard coded data.
   static List<charts.Series<LinearSales, int>> _createSampleData() {
     final data = [
-      new LinearSales(0, 35, Color(0xFF1565C0),'Scope 1'),
-      new LinearSales(1, 55, Color(0xFF2196F3),'Scope 2'),
-      new LinearSales(2, 45, Color(0xFF90CAF9),'Scope 3'),
+      new LinearSales(0, 35, Color(0xFF1E88E5),'Scope 1'),
+      new LinearSales(1, 55, Color(0xFFE53935),'Scope 2'),
+      new LinearSales(2, 45, Color(0xFFFDD835),'Scope 3'),
     ];
 
     return [

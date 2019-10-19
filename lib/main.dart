@@ -14,7 +14,88 @@ class MyApp extends StatefulWidget {
   }
 }
 
+//Chart Class:
+class scopeStructure {
+  final DateTime month;
+  final double emissionValue;
+
+  scopeStructure({this.month, this.emissionValue});
+}
+
+//Variables:
+var lineDataScope1 = [
+  scopeStructure(month: DateTime(2019, 3), emissionValue: 40),
+  scopeStructure(month: DateTime(2019, 4), emissionValue: 20),
+  scopeStructure(month: DateTime(2019, 5), emissionValue: 50),
+  scopeStructure(month: DateTime(2019, 6), emissionValue: 60),
+  scopeStructure(month: DateTime(2019, 7), emissionValue: 25),
+  scopeStructure(month: DateTime(2019, 8), emissionValue: 35),
+];
+
+var lineDataScope2 = [
+  scopeStructure(month: DateTime(2019, 3), emissionValue: 50),
+  scopeStructure(month: DateTime(2019, 4), emissionValue: 70),
+  scopeStructure(month: DateTime(2019, 5), emissionValue: 20),
+  scopeStructure(month: DateTime(2019, 6), emissionValue: 60),
+  scopeStructure(month: DateTime(2019, 7), emissionValue: 15),
+  scopeStructure(month: DateTime(2019, 8), emissionValue: 75),
+];
+
+var lineDataScope3 = [
+  scopeStructure(month: DateTime(2019, 3), emissionValue: 55),
+  scopeStructure(month: DateTime(2019, 4), emissionValue: 27),
+  scopeStructure(month: DateTime(2019, 5), emissionValue: 25),
+  scopeStructure(month: DateTime(2019, 6), emissionValue: 97),
+  scopeStructure(month: DateTime(2019, 7), emissionValue: 23),
+  scopeStructure(month: DateTime(2019, 8), emissionValue: 34),
+];
+
+//Line Series:
+var lineSeries = [
+  charts.Series(
+    domainFn: (scopeStructure s, _) => s.month,
+    measureFn: (scopeStructure s, _) => s.emissionValue,
+    id: "Scope 1",
+    data: lineDataScope1,
+  ),
+  charts.Series(
+    domainFn: (scopeStructure s, _) => s.month,
+    measureFn: (scopeStructure s, _) => s.emissionValue,
+    id: "Scope 2",
+    data: lineDataScope2,
+  ),
+  charts.Series(
+    domainFn: (scopeStructure s, _) => s.month,
+    measureFn: (scopeStructure s, _) => s.emissionValue,
+    id: "Scope 3",
+    data: lineDataScope3,
+  ),
+];
+
+//Chart Design
+var lineChart = charts.TimeSeriesChart(
+  lineSeries,
+  animate: true,
+  behaviors: [charts.SeriesLegend(desiredMaxColumns: 1)],
+);
+
+//Chart Builder
+var lineChartWidget = Padding(
+  padding: EdgeInsets.all(24.0),
+  child: Card(
+    child: SizedBox(
+      height: 300.0,
+      child: lineChart,
+    ),
+  ),
+);
+
+
 class _MyAppState extends State<MyApp> {
+  /*******************Line Graph***********************/
+
+  /******************End Line Graph**************************/
+
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -33,203 +114,51 @@ class _MyAppState extends State<MyApp> {
           //Insert dashboard Code here
           Container(
             decoration: BoxDecoration(
-                color: Colors.white30,
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                border: Border.all(
+              color: Colors.white30,
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              border: Border.all(
                 width: 2,
-                ),
+              ),
             ),
             child: Center(
                 child: Text('Scope Wise Distribution',
                     style: TextStyle(color: Colors.white, fontSize: 24))),
           ),
+
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white30,
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  border: Border.all(
-                  width: 2,
-                  ),
-              ),
               child: Container(
                 child: Center(
                   child: Column(
                     children: <Widget>[
                       Container(
-                        width: 200,
-                        height: 250,
+                        width: 280,
+                        height: 280,
                         child: DonutAutoLabelChart.withSampleData(),
-                      )
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white30,
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          border: Border.all(
+                            width: 2,
+                          ),
+                        ),
+                        child: Center(
+                            child: Text('Worst Performer: Scope 2',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20))),
+                      ),
+                      Container(
+                        child: lineChartWidget,
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
           ),
-          Padding(
-
-            padding: const EdgeInsets.all(5.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white30,
-                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                border: Border.all(
-                  width: 2,
-                ),
-              ),
-              child: Center(
-                  child: Text('Worst performing scope: Scope 2',style: TextStyle(color: Colors.white, fontSize: 25),)
-              ),
-            ),
-          ),
-          Row(children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        "Scope 1",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Text(
-                      "35",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      child: Text(
-                        "Good",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      color: Colors.green,
-                    )
-                  ],
-                ),
-                height: 100,
-                width: 127,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.white30,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        "Scope 2",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Text(
-                      "55",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      child: Text(
-                        "Moderate",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      color: Colors.yellow[600],
-                    )
-                  ],
-                ),
-                height: 100,
-                width: 127,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.white30,
-                  border: Border.all(
-                    width: 2,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Text(
-                        "Scope 3",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Text(
-                      "45",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      child: Text(
-                        "Good",
-                        style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      color: Colors.green,
-                    )
-                  ],
-                ),
-                height: 100,
-                width: 127,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  color: Colors.white30,
-                ),
-              ),
-            ),
-          ]),
         ],
       ),
     ),
@@ -498,25 +427,4 @@ class _MyAppState extends State<MyApp> {
       ),
     ));
   }
-}
-
-class Pollution {
-  String place;
-  int quantity;
-
-  Pollution(this.place, this.quantity);
-}
-
-class Vehicles {
-  int month;
-  double emissions;
-
-  Vehicles(this.month, this.emissions);
-}
-
-class Electricity {
-  String emission;
-  double emission_value;
-
-  Electricity(this.emission, this.emission_value);
 }
