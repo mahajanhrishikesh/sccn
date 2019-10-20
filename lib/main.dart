@@ -1,10 +1,54 @@
 import 'package:flutter/material.dart';
 import 'donut.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:animated_splash/animated_splash.dart';
+
 
 void main() {
-  runApp(MyApp());
+  Function duringSplash = () {
+    print('Something background process');
+    int a = 123 + 23;
+    print(a);
+
+    if (a > 100)
+      return 1;
+    else
+      return 2;
+  };
+
+  Map<int, Widget> op = {1: MyApp(), 2: MyApp()};
+
+  runApp(MaterialApp(
+    home: AnimatedSplash(
+      imagePath: 'assets/mitdome.png',
+      home: splash(),
+      customFunction: duringSplash,
+      duration: 2500,
+      type: AnimatedSplashType.BackgroundProcess,
+      outputAndHome: op,
+    ),
+  ));
 }
+class splash extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _splashState();
+  }
+}
+
+class _splashState extends State<splash>{
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Home'),
+        ),
+        body: Center(
+            child: Text('My Cool App',
+                style: TextStyle(color: Colors.black, fontSize: 20.0))));
+  }
+}
+
 
 class MyApp extends StatefulWidget {
   @override
@@ -21,6 +65,7 @@ class scopeStructure {
 
   scopeStructure({this.month, this.emissionValue});
 }
+
 
 //Variables:
 var lineDataScope1 = [
@@ -91,10 +136,8 @@ var lineChartWidget = Padding(
 );
 
 
-class _MyAppState extends State<MyApp> {
-  /*******************Line Graph***********************/
 
-  /******************End Line Graph**************************/
+class _MyAppState extends State<MyApp> {
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
