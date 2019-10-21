@@ -1,60 +1,78 @@
 import 'package:flutter/material.dart';
 import 'donut.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:animated_splash/animated_splash.dart';
-
+import "package:http/http.dart" as http;
+import 'dart:async';
+import 'dart:convert';
+import 'package:flare_splash_screen/flare_splash_screen.dart';
 
 void main() {
-  Function duringSplash = () {
-    print('Something background process');
-    int a = 123 + 23;
-    print(a);
-
-    if (a > 100)
-      return 1;
-    else
-      return 2;
-  };
-
-  Map<int, Widget> op = {1: MyApp(), 2: MyApp()};
-
-  runApp(MaterialApp(
-    home: AnimatedSplash(
-      imagePath: 'assets/mitdome.png',
-      home: splash(),
-      customFunction: duringSplash,
-      duration: 2500,
-      type: AnimatedSplashType.BackgroundProcess,
-      outputAndHome: op,
-    ),
-  ));
-}
-class splash extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _splashState();
-  }
+  runApp(MyApp());
+  //print(cool.month);
 }
 
-class _splashState extends State<splash>{
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Home'),
-        ),
-        body: Center(
-            child: Text('My Cool App',
-                style: TextStyle(color: Colors.black, fontSize: 20.0))));
-  }
-}
-
+var pg1data;
+var pg2data;
+//NewScopeStructure cool;
 
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     return _MyAppState();
+  }
+
+}
+
+class _MyAppState extends State<MyApp> {
+
+  String removeAllHtmlTags(String htmlText) {
+    RegExp exp = RegExp(
+        r"<[^>]*>",
+        multiLine: true,
+        caseSensitive: true
+    );
+
+    return htmlText.replaceAll(exp, '');
+  }
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: SplashScreen(
+        'assets/finallyfinal.flr',
+        HomePage(),
+        startAnimation: 'Untitled',
+        //endAnimation: 'Untitled',
+        //loopAnimation: 'Untitled',
+        until: () => Future.delayed(const Duration(seconds: 5), () async {
+          http.Response response = await http.get("https://www.creationdevs.in/sccn/fetchmain.php");
+          pg1data = response.body.toString();
+          pg1data = removeAllHtmlTags(pg1data);
+          pg1data = json.decode(pg1data);
+          response = await http.get("https://www.creationdevs.in/sccn/fetch.php");
+          pg2data = response.body.toString();
+          debugPrint(pg1data);
+          //cool = NewScopeStructure.fromJson(pg1data, "Scope1", 0);
+          //debugPrint(cool.month.toString());
+          //setState(() {
+          //  userData = data["data"];
+          //});
+          //debugPrint(data.toString());
+        }),
+        backgroundColor: Color(0xffC1FBCE),
+      ),
+    );
+  }
+}
+
+class HomePage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return _HomePageState();
   }
 }
 
@@ -137,7 +155,7 @@ var lineChartWidget = Padding(
 
 
 
-class _MyAppState extends State<MyApp> {
+class _HomePageState extends State<HomePage> {
 
   int _selectedIndex = 0;
   static const TextStyle optionStyle =
@@ -147,8 +165,8 @@ class _MyAppState extends State<MyApp> {
       //Code for dashboard begins here
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [
-          const Color(0xFF1B5E20),
-          const Color(0xFF66BB6A),
+          const Color(0xFFC1FBCE),
+          const Color(0xFFA5D6A7),
         ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
       ),
       child: ListView(
@@ -165,7 +183,7 @@ class _MyAppState extends State<MyApp> {
             ),
             child: Center(
                 child: Text('Scope Wise Distribution',
-                    style: TextStyle(color: Colors.white, fontSize: 24))),
+                    style: TextStyle(color: Colors.black, fontSize: 24))),
           ),
 
           Padding(
@@ -191,7 +209,7 @@ class _MyAppState extends State<MyApp> {
                         child: Center(
                             child: Text('Worst Performer: Scope 2',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 20))),
+                                    color: Colors.black, fontSize: 20))),
                       ),
                       Container(
                         child: lineChartWidget,
@@ -209,8 +227,8 @@ class _MyAppState extends State<MyApp> {
       //Code for graphs begins here
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [
-          const Color(0xFF1B5E20),
-          const Color(0xFF66BB6A),
+          const Color(0xFFC1FBCE),
+          const Color(0xFFA5D6A7),
         ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
       ),
       child: ListView(
@@ -228,8 +246,8 @@ class _MyAppState extends State<MyApp> {
       //Code for legend begins here
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [
-          const Color(0xFF1B5E20),
-          const Color(0xFF66BB6A),
+          const Color(0xFFC1FBCE),
+          const Color(0xFFA5D6A7),
         ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
       ),
       child: ListView(
@@ -238,7 +256,7 @@ class _MyAppState extends State<MyApp> {
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
-              color: Colors.white30,
+              color: Colors.white70,
             ),
             child: Column(
               children: <Widget>[
@@ -252,7 +270,7 @@ class _MyAppState extends State<MyApp> {
                           'Scope 1',
                           style: TextStyle(
                             fontSize: 20,
-                            color: Colors.yellow,
+                            color: Colors.green,
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -262,7 +280,7 @@ class _MyAppState extends State<MyApp> {
                             'Direct Green House Gas Emissions',
                             style: TextStyle(
                               fontSize: 17,
-                              color: Colors.white,
+                              color: Colors.black,
                             ),
                             textAlign: TextAlign.left,
                           ),
@@ -283,7 +301,7 @@ class _MyAppState extends State<MyApp> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       "Direct GHG emissions occur from sources that are owned or controlled by the institution, for example, emissions from cooking gas, combustion in owned or controlled boilers, vehicles, etc.; emissions from chemical, pharmaceutical labs.",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: Colors.black),
                     )),
               ],
             ),
@@ -307,7 +325,7 @@ class _MyAppState extends State<MyApp> {
                             'Scope 2',
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.yellow,
+                              color: Colors.green,
                             ),
                             textAlign: TextAlign.left,
                           ),
@@ -317,7 +335,7 @@ class _MyAppState extends State<MyApp> {
                               'Electricity Greenhouse Gas Emissions',
                               style: TextStyle(
                                 fontSize: 17,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                               textAlign: TextAlign.left,
                             ),
@@ -338,7 +356,7 @@ class _MyAppState extends State<MyApp> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         "This scope accounts for GHG emissions from the generation of purchased electricity consumed by a institution. Purchased electricity is defined as electricity that is purchased or otherwise brought into the organizational boundary of the Institute. These emissions physically occur at the facility where electricity is generated.",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       )),
                 ],
               ),
@@ -363,7 +381,7 @@ class _MyAppState extends State<MyApp> {
                             'Scope 3',
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.yellow,
+                              color: Colors.green,
                             ),
                             textAlign: TextAlign.left,
                           ),
@@ -373,7 +391,7 @@ class _MyAppState extends State<MyApp> {
                               'Other Indirect Greenhouse Gas Emissions',
                               style: TextStyle(
                                 fontSize: 17,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                               textAlign: TextAlign.left,
                             ),
@@ -394,7 +412,7 @@ class _MyAppState extends State<MyApp> {
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
                         "This is an optional reporting category that allows for the treatment of all other indirect emissions. These emissions are a consequence of the activities of the Institute, but occur from sources not owned or controlled by the Institute. Some examples of scope 3 activities are extraction and production of purchased materials; transportation of purchased fuels; and use of products and services.",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       )),
                 ],
               ),
@@ -471,3 +489,26 @@ class _MyAppState extends State<MyApp> {
     ));
   }
 }
+
+
+
+//Test SafeArea
+class NewScopeStructure {
+
+  final DateTime month;
+  final double emissionValue;
+  final String scopeName;
+
+  NewScopeStructure({this.scopeName,this.month, this.emissionValue});
+
+  factory NewScopeStructure.fromJson(Map<String, dynamic> json, String scope, int id) {
+    return NewScopeStructure(
+      scopeName: json[scope],
+      month: json[scope][id]['month'],
+      emissionValue: json[scope][id]['emission'],
+    );
+  }
+}
+
+
+
