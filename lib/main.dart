@@ -51,10 +51,13 @@ class _MyAppState extends State<MyApp> {
           http.Response response = await http.get("https://www.creationdevs.in/sccn/fetchmain.php");
           pg1data = response.body.toString();
           pg1data = removeAllHtmlTags(pg1data);
-          pg1data = json.decode(pg1data);
+          debugPrint(pg1data);
+          //pg1data = json.decode(pg1data);
           response = await http.get("https://www.creationdevs.in/sccn/fetch.php");
           pg2data = response.body.toString();
-          debugPrint(pg1data);
+          pg2data = removeAllHtmlTags(pg2data);
+          debugPrint(pg2data);
+          //pg2data = json.decode(pg2data);
           //cool = NewScopeStructure.fromJson(pg1data, "Scope1", 0);
           //debugPrint(cool.month.toString());
           //setState(() {
