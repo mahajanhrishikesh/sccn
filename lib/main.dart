@@ -48,16 +48,23 @@ class _MyAppState extends State<MyApp> {
         //endAnimation: 'Untitled',
         //loopAnimation: 'Untitled',
         until: () => Future.delayed(const Duration(seconds: 5), () async {
-          http.Response response = await http.get("https://www.creationdevs.in/sccn/fetchmain.php");
+          http.Response response;
+          do {
+            response = await http.get(
+                "https://www.creationdevs.in/sccn/fetchmain.php");
+          }while(response.statusCode != 200);
           pg1data = response.body.toString();
-          pg1data = removeAllHtmlTags(pg1data);
+          pg1data = removeAllHtmlTags(pg1data[0]);
           debugPrint(pg1data);
-          //pg1data = json.decode(pg1data);
-          response = await http.get("https://www.creationdevs.in/sccn/fetch.php");
+          //pg1data = json.decode(pg1data[0]);
+          do {
+            response = await http.get(
+                "https://www.creationdevs.in/sccn/fetch.php");
+          }while(response.statusCode != 200);
           pg2data = response.body.toString();
           pg2data = removeAllHtmlTags(pg2data);
           debugPrint(pg2data);
-          //pg2data = json.decode(pg2data);
+          //pg2data = json.decode(pg2data[0]);
           //cool = NewScopeStructure.fromJson(pg1data, "Scope1", 0);
           //debugPrint(cool.month.toString());
           //setState(() {
@@ -231,7 +238,7 @@ class _HomePageState extends State<HomePage> {
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [
           const Color(0xFFC1FBCE),
-          const Color(0xFFA5D6A7),
+          const Color(0xFF69F0AE),
         ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
       ),
       child: ListView(
